@@ -336,7 +336,7 @@ if (!hello_run && Dubtrack.session.id && !ifUserBanned) {
             }
         },
         //Ref 2.3.1: Input
-        input: function(title,content,placeholder,confirm,maxlength) {
+        input: function(title,detail,content,placeholder,confirm,maxlength) {
             var textarea = '', confirmButton = '';
             if (placeholder) {
                 var mx = maxlength || 999;
@@ -352,7 +352,7 @@ if (!hello_run && Dubtrack.session.id && !ifUserBanned) {
                             '<h1>'+title+'</h1>',
                         '</div>',
                         '<div class="content">',
-                            '<p>'+content+'</p>',
+                            '<p>'+detail+'</p>',
                             textarea,
                         '</div>',
                         '<div class="control">',
@@ -490,7 +490,7 @@ if (!hello_run && Dubtrack.session.id && !ifUserBanned) {
             $('.report').replaceWith('<li onclick="" class="for_content_li for_content_feature report"><p class="for_content_off"><i class="fi-check"></i></p><p class="for_content_p">Bug Report</p></li>');
         },
         report_modal: function() {
-            hello.input('Bug Report:','','Please only report bugs for DubX, not Dubtrack. \nBe sure to give a detailed description of the bug, and a way to replicate it, if possible.','confirm-for36','999');
+            hello.input('Bug Report:','','','Please only report bugs for DubX, not Dubtrack. \nBe sure to give a detailed description of the bug, and a way to replicate it, if possible.','confirm-for36','999');
             $('.confirm-for36').click(hello.report_content);
             $('.confirm-for36').click(hello.closeErr);
         },
@@ -562,7 +562,7 @@ if (!hello_run && Dubtrack.session.id && !ifUserBanned) {
         },
         createAfkMessage: function() {
             var current = localStorage.getItem('customAfkMessage');
-            hello.input('Custom AFK Message',current,'I\'m not here right now.','confirm-for315','255');
+            hello.input('Custom AFK Message',current,current,'I\'m not here right now.','confirm-for315','255');
             $('.confirm-for315').click(hello.saveAfkMessage);
         },
         afk: function(e) {
@@ -604,7 +604,7 @@ if (!hello_run && Dubtrack.session.id && !ifUserBanned) {
         },
         createCustomMentions: function() {
             var current = localStorage.getItem('custom_mentions');
-            hello.input('Custom Mention Triggers (separate by comma)',current,'separate, custom triggers, by, comma, :heart:','confirm-for315','255');
+            hello.input('Custom Mention Triggers (separate by comma)',current,current,'separate, custom triggers, by, comma, :heart:','confirm-for315','255');
             $('.confirm-for315').click(hello.saveCustomMentions);
         },
         saveCustomMentions: function() {
@@ -626,8 +626,9 @@ if (!hello_run && Dubtrack.session.id && !ifUserBanned) {
             }
         },
         css_modal: function() {
-            var current = localStorage.getItem('css') || "";
-            hello.input('CSS',current,'https://example.com/example.css','confirm-for313','999');
+        var current = localStorage.getItem('css'),
+            detail = !current ? 'Insert link to Custom CSS below' : current;
+            hello.input('CSS',detail,current,'https://example.com/example.css','confirm-for313','999');
             $('.confirm-for313').click(hello.css_import);
         },
         css_import: function() {
@@ -697,7 +698,9 @@ if (!hello_run && Dubtrack.session.id && !ifUserBanned) {
             }
         },
         medium_modal: function() {
-            hello.input('Link an image file:','It is recommended a .jpg file is used','https://example.com/example.jpg','confirm-for314','999');
+            var current = localStorage.getItem('medium'),
+                detail = !current ? 'Insert link to Custom Background below, recommended a .jpg file' : current;
+            hello.input('Link an image file:',detail,current,'https://example.com/example.jpg','confirm-for314','999');
             $('.confirm-for314').click(hello.medium_import);
         },
         medium_import: function() {

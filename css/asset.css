@@ -124,6 +124,51 @@
     padding-bottom: 16px;
     font-size: 14px;
 }
+.onErr .container .content .background_options {
+    min-height: 3rem;
+    display: flex;
+    position: relative;
+}
+.onErr .container .content .background_options > div {
+    width: 50%;
+    height: 100%;
+    font-size: .8rem;
+    color: #aaa;
+    text-align: center;
+}
+.onErr .container .content .background_options > div span,
+.onErr .container .content .background_options > div label {
+    color: inherit;
+    font-size: inherit;
+    position: relative;
+}
+.onErr .container .content .background_options > div span {
+    display: block;
+    font-weight: 700;
+}
+.onErr .container .content .background_options > div label input[type="number"] {
+    padding: 0;
+    font-size: inherit;
+    font-style: normal;
+    border: 1px solid #4a4a4a;
+    border-radius: 1rem;
+    text-align: center;
+}
+.onErr .container .content .background_options > div.time label input[type="number"] {
+    width: 29%;
+}
+.onErr .container .content .background_options > div.time label::after {
+    content: attr(data-unit);
+    position: absolute;
+    left: 0;
+    bottom: -1.5em;
+    width: 100%;
+    text-align: center;
+    font-size: .8em;
+}
+.onErr .container .content .background_options > div.fade label input[type="number"] {
+    width: 50px;
+}
 .onErr .container .content .input {
     width: 100% !important;
     height: 108px !important;

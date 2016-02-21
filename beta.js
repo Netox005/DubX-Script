@@ -697,24 +697,61 @@ if (!hello_run && Dubtrack.session.id && !ifUserBanned) {
                 hello.off('.nicole');
             }
         },
+        medium_bgoptsEl: undefined,
         medium_modal: function() {
             var current = localStorage.getItem('medium'),
-                detail = !current ? 'Insert link to Custom Background below, recommended a .jpg file' : current;
-            hello.input('Link an image file:',detail,current,'https://example.com/example.jpg','confirm-for314','999');
+                detail = !current ? 'Insert link to Custom Background below, recommended a .jpg file. For multiple backgrounds, put each link on a new line.' : current.split(',').join('<br/>');
+            hello.input('Link an image file:',detail,current ? current.split(',').join('\n') : '','https://example.com/example.jpg','confirm-for314','999');
             $('.confirm-for314').click(hello.medium_import);
+            var bgTime = localStorage.getItem('bg_time');
+            bgTime = !bgTime || bgTime === '0' ? 10 : parseInt(bgTime);
+            var bgFade = localStorage.getItem('bg_fade');
+            bgFade = !bgFade ? 0 : parseInt(bgFade);
+
+            var hours = Math.floor(bgTime / 3600);
+            var minutes = Math.floor((bgTime - (hours * 3600)) / 60);
+            var seconds = bgTime - (hours * 3600) - (minutes * 60);
+            hello.medium_bgoptsEl = $([
+                '<div class="background_options">',
+                    '<div class="time">',
+                        '<span>Duration</span>',
+                        '<label data-unit="hour"><input type="number" step="1" min="0" max="24" value="' + hours + '"></label>',
+                        ':',
+                        '<label data-unit="minutes"><input type="number" step="1" min="0" max="60" value="' + minutes + '"></label>',
+                        ':',
+                        '<label data-unit="seconds"><input type="number" step="1" min="0" max="60" value="' + seconds + '"></label>',
+                    '</div>',
+                    '<div class="fade">',
+                        '<span>Fade</span>',
+                        '<label><input type="number" step="1" min="0" max="60" value="' + bgFade + '"> seconds</label>',
+                    '</div>',
+                '</div>',
+            ].join('\n')).appendTo('.onErr .content');
         },
         medium_import: function() {
-            var content = $('.input').val();
+            var content = $('.input').val().trim().split('\n');
+            var timeEl = hello.medium_bgoptsEl.children('.time'),
+                timeHour = parseInt(timeEl.find('label[data-unit="hour"] input').val()),
+                timeMins = parseInt(timeEl.find('label[data-unit="minutes"] input').val()),
+                timeSecs = parseInt(timeEl.find('label[data-unit="seconds"] input').val());
             localStorage.setItem('medium',content);
-            $('.medium').remove();
-            $('body').append('<div class="medium" style="width: 100vw;height: 100vh;z-index: -999998;position: fixed; background: url('+content+');background-size: cover;top: 0;"></div>');
+            localStorage.setItem('bg_time', (timeHour * 3600) + (timeMins * 60) + timeSecs);
+            localStorage.setItem('bg_fade', hello.medium_bgoptsEl.find('.fade label input').val());
+            hello.medium_load(content);
             $('.onErr').remove();
         },
-        medium_load: function() {
-            if (localStorage.getItem('medium') !== null) {
-                var content = localStorage.getItem('medium');
-                $('body').append('<div class="medium" style="width: 100vw;height: 100vh;z-index: -999998;position: fixed; background: url('+content+');background-size: cover;top: 0;"></div>');
+        medium_load: function(content) {
+            if(content === undefined || typeof(content) === 'function') {
+                content = localStorage.getItem('medium');
+                if(content) content = content.split(',');
             }
+            if (content && content[0].length !== 0) {
+                var bgTime = localStorage.getItem('bg_time');
+                bgTime = !bgTime || bgTime === '0' ? 10 : parseInt(bgTime);
+                var bgFade = localStorage.getItem('bg_fade');
+                bgFade = !bgFade ? 1000 : parseInt(bgFade);
+                $.backstretch(content.length === 1 ? content[0] : content, { duration: bgTime * 1000, fade: bgFade * 1000 });
+            } else $.backstretch(Dubtrack.room.options.model.get('background').secure_url, { fade: 0 });
         },
         show_timestamps: function() {
             if(!options.let_show_timestamps) {

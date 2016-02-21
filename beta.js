@@ -41,7 +41,7 @@ $.ajax({
 });
 if (!hello_run && Dubtrack.session.id && !ifUserBanned) {
     hello_run = true;
-    var our_version = '03.03.00 - Happy Holidays';
+    var our_version = '03.04.00 - Multiple Backgrounds';
 
     //Ref 1: Variables
     var options = {
@@ -715,7 +715,7 @@ if (!hello_run && Dubtrack.session.id && !ifUserBanned) {
                 '<div class="background_options">',
                     '<div class="time">',
                         '<span>Duration</span>',
-                        '<label data-unit="hour"><input type="number" step="1" min="0" max="24" value="' + hours + '"></label>',
+                        '<label data-unit="hours"><input type="number" step="1" min="0" max="24" value="' + hours + '"></label>',
                         ':',
                         '<label data-unit="minutes"><input type="number" step="1" min="0" max="60" value="' + minutes + '"></label>',
                         ':',
